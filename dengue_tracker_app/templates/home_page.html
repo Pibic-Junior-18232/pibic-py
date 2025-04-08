@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+  Página Inicial
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-md-8 offset-md-2">
+      <!-- Título principal -->
+      <h1 class="mb-4 text-center">
+        SISTEMA DE GERENCIAMENTO E VISUALIZAÇÃO DE CASOS DE DENGUE DA CIDADE DE DRACENA
+      </h1>
+
+      <!-- Card com infos do projeto -->
+      <div class="card shadow border-0">
+        <div class="card-body">
+          <h2 class="h4 mb-3 text-center">PROJETO PIBIC n.º 18232</h2>
+
+          <p class="lead text-center">
+            Mapeamento de casos de dengue usando Django, Google Earth Engine e
+            técnica de inteligência artificial para análise de dados.
+          </p>
+
+          <hr />
+
+          <div class="mt-4 text-center">
+            <p><strong>Discente:</strong> Marcelo Vieira Gonçalves</p>
+            <p><strong>Orientador:</strong> Rafael Simões Tomaz</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Se quiser exibir logos, descomente o bloco abaixo e ajuste o path das imagens-->
+      <div class="d-flex justify-content-around align-items-center mt-4">
+        <img src="{% static 'dengue_tracker_app/images/etec-icon.avif' %}" alt="Etec" height="70">
+        <img src="{% static 'dengue_tracker_app/images/unesp-icon.png' %}" alt="SCAT" height="70">
+        <img src="{% static 'dengue_tracker_app/images/dracena-icon.png' %}" alt="Prefeitura Dracena" height="70">
+      </div>
+      
+    </div>
+  </div>
+</div>
+{% endblock %}
