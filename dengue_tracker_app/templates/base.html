@@ -80,7 +80,7 @@
 
       main {
         flex: 1;
-        padding: 2rem;
+        padding: 1rem 2rem 0rem 2rem;
       }
     </style>
   </head>
@@ -96,7 +96,7 @@
         <a href="{% url 'home' %}" class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
           <i class="bi bi-house-door-fill"></i> <span>Página Inicial</span>
         </a>
-        <a href="{% url 'registros' %}" class="nav-link {% if request.resolver_match.url_name == 'registros' %}active{% endif %}">
+        <a href="{% url 'registros' %}" class="nav-link {% if request.resolver_match.url_name == 'registros' or request.resolver_match.url_name == 'novo_caso' %}active{% endif %}">
           <i class="bi bi-virus2"></i> <span>Casos Registrados</span>
         </a>
         <a href="#" class="nav-link">

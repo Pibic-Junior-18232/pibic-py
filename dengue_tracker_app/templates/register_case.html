@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block title %}Registrar Novo Caso{% endblock %}
+
+{% block content %}
+<h2 class="mb-2">Registrar Novo Caso</h2>
+
+<form method="post" novalidate>
+  {% csrf_token %}
+  
+  <div class="card mb-4">
+    <div class="card-header">
+      Novo Caso
+    </div>
+    <div class="card-body">
+      <!-- Linha 1: Nome / Telefone -->
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="{{ patient_form.name.id_for_label }}" class="form-label">
+            {{ patient_form.name.label }}
+          </label>
+          {{ patient_form.name }}
+          {% if patient_form.name.errors %}
+            <div class="text-danger small">{{ patient_form.name.errors|striptags }}</div>
+          {% endif %}
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="{{ patient_form.phone.id_for_label}}" class="form-label">
+            {{ patient_form.phone.label }}
+          </label>
+          {{ patient_form.phone }}
+          {% if patient_form.phone.errors %}
+            <div class="text-danger small">{{ patient_form.phone.errors|striptags }}</div>
+          {% endif %}
+        </div>
+      </div>
+      
+      <!-- Linha 2: Data de Nascimento / Gênero / Cidade -->
+      <div class="row">
+        <div class="col-md-2 mb-3">
+          <label for="{{ patient_form.birth_date.id_for_label }}" class="form-label">
+            {{ patient_form.birth_date.label }}
+          </label>
+
+          {{ patient_form.birth_date }}
+          {% if patient_form.birth_date.errors %}
+            <div class="text-danger small">{{ patient_form.birth_date.errors|striptags }}</div>
+          {% endif %}
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="{{ patient_form.gender.id_for_label }}" class="form-label">
+            {{ patient_form.gender.label }}
+          </label>
+          {{ patient_form.gender }}
+          {% if patient_form.gender.errors %}
+            <div class="text-danger small">{{ patient_form.gender.errors|striptags }}</div>
+          {% endif %}
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="{{ address_form.city.id_for_label }}" class="form-label">
+            {{ address_form.city.label }}
+          </label>
+          {{ address_form.city }}
+          {% if address_form.city.errors %}
+            <div class="text-danger small">{{ address_form.city.errors|striptags }}</div>
+          {% endif %}
+        </div>
+      </div>
+      
+      <!-- Linha 3: Rua -->
+      <div class="row">
+       
+        <div class="col-md-4 mb-3"> <!-- Rua -->
+          <label for="{{ address_form.street.id_for_label }}" class="form-label">
+            {{ address_form.street.label }}
+          </label>
+          {{ address_form.street }}
+          {% if address_form.street.errors %}
+            <div class="text-danger small">{{ address_form.street.errors|striptags }}</div>
+          {% endif %}
+        </div>
+        <div class="col-md-2 mb-3"> <!-- Numero -->
+          <label for="{{ address_form.number.id_for_label }}" class="form-label">
+            {{ address_form.number.label }}
+          </label>
+          {{ address_form.number }}
+          {% if address_form.number.errors %}
+            <div class="text-danger small">{{ address_form.number.errors|striptags }}</div>
+          {% endif %}
+        </div>
+        <div class="col-md-3 mb-3"> <!-- CEP -->
+          <label for="{{ address_form.cep.id_for_label }}" class="form-label">
+            {{ address_form.cep.label }}
+          </label>
+          {{ address_form.cep }}
+          {% if address_form.cep.errors %}
+            <div class="text-danger small">{{ address_form.cep.errors|striptags }}</div>
+          {% endif %}
+        </div>
+        <div class="col-md-3 mb-3"> <!-- Bairro -->
+          <label for="{{ address_form.district.id_for_label }}" class="form-label">
+            {{ address_form.district.label }}
+          </label>
+          {{ address_form.district }}
+          {% if address_form.district.errors %}
+            <div class="text-danger small">{{ address_form.district.errors|striptags }}</div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Linha 6: Diagnóstico / Sintomas -->
+      <div class="row">
+        <div class="col-md-6 mb-1"> <!-- Diagnostico -->
+          <label for="{{ case_form.status.id_for_label }}" class="form-label">
+            {{ case_form.status.label }}
+          </label>
+          {{ case_form.status }}
+          {% if case_form.status.errors %}
+            <div class="text-danger small">{{ case_form.status.errors|striptags }}</div>
+          {% endif %}
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">{{ case_form.symptoms.label }}</label>
+          <div class="row">
+            {% for checkbox in case_form.symptoms %}
+              <div class="col-6 col-md-4">
+                <div class="form-check">
+                  {{ checkbox.tag }}
+                  <label class="form-check-label" for="{{ checkbox.id_for_label }}">
+                    {{ checkbox.choice_label }}
+                  </label>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+          {% if case_form.symptoms.errors %}
+            <div class="text-danger small mt-2">{{ case_form.symptoms.errors|striptags }}</div>
+          {% endif %}
+        </div>
+       
+      </div>
+      
+      <!-- Linha 7: Notas (Textarea ocupa col-12 se quiser que seja mais largo) -->
+      <div class="row">
+        
+      </div>
+      
+    </div>
+    <div class="card-footer d-flex justify-content-between">
+      <a href="{% url 'registros' %}" class="btn btn-secondary">
+        <i class="bi bi-arrow-left"></i> Voltar
+      </a>
+      <button type="submit" class="btn btn-primary">
+        <i class="bi bi-save"></i> Salvar Caso
+      </button>
+    </div>
+  </div>
+</form>
+{% endblock %}

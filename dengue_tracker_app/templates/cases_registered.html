@@ -2,62 +2,59 @@
 {% load static %}
 
 {% block title %}
-  Lista de Casos
+  Lista de Cases
 {% endblock %}
 
 {% block content %}
-<div class="container">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>Lista de Casos</h1>
-    <a href="" class="btn btn-primary">
-      <i class="bi bi-plus-circle"></i> Novo Caso
+<div class="container mt-1">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="fw-bold">Lista de Casos</h2>
+    <a href="{% url 'novo_caso' %}" class="btn btn-primary">
+      <i class="bi bi-plus-circle me-1"></i> Novo Caso
     </a>
   </div>
 
-  <div class="card shadow border-0">
-    <div class="card-body">
-      <table class="table table-hover">
-        <thead class="table-light">
-          <tr>
-            {% comment %} <th>ID</th> {% endcomment %}
-            <th>Paciente</th>
-            <th>Status</th>
-            <th>Endereço</th>
-            <th>Data de Criação</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for case in cases %}
-            <tr>
-              {% comment %} <td>{{ case.id }}</td> {% endcomment %}
-              <td>{{ case.patient.name }}</td>
-              <td>{{ case.status|title }}</td>
-              <td>
-                {% if case.address %}
-                  {{ case.address.street }}, {{ case.address.number }}<br>
-                  {{ case.address.district }} -
-                  {% if case.address.city %}{{ case.address.city.name }} ({{ case.address.city.state }}){% endif %}
-                {% else %}
-                  -
-                {% endif %}
-              </td>
-              <td>{{ case.created_at|date:"d/m/Y H:i" }}</td>
-              <td>
-                <!-- Exemplo: link para detalhes do caso -->
-                <a href="{% url 'case_detail' case.id %}" class="btn btn-sm btn-info">
-                  Detalhes
-                </a>
-              </td>
-            </tr>
-          {% empty %}
-            <tr>
-              <td colspan="6" class="text-center">Nenhum caso registrado.</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
+  <p class="text-muted">🔍 {{ cases|length }} - Casos encontrados</p>
+
+  <div class="table-responsive shadow-sm rounded">
+    <table class="table table-hover align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>Paciente</th>
+          <th>Status</th>
+          <th>Endereço</th>
+          <th>Data de Criação</th>
+          <th class="text-end">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for case in cases %}
+        <tr>
+          <td class="fw-semibold">{{ case.patient.name }}</td>
+          <td>
+            {% if case.status == 'suspeito' %}
+              <span class="badge bg-warning text-dark">Suspeito</span>
+            {% elif case.status == 'confirmado' %}
+              <span class="badge bg-success">Confirmado</span>
+            {% else %}
+              <span class="badge bg-secondary">Outro</span>
+            {% endif %}
+          </td>
+          <td>
+            {{ case.address.street }}, {{ case.address.number }}<br>
+            {{ case.address.district }} - {{ case.address.city.name }} ({{ case.address.city.state }})
+          </td>
+          <td>{{ case.created_at|date:"d/m/Y H:i" }}</td>
+          <td class="text-end">
+            {% comment %} {% url 'detalhes_case' case.id %} {% endcomment %}
+            <a href="" class="btn btn-info btn-sm">
+              <i class="bi bi-eye"></i> Detalhes
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
 </div>
 {% endblock %}
