@@ -17,7 +17,8 @@
       <div class="row">
         <div class="col-md-6 mb-3">
           <label for="{{ patient_form.name.id_for_label }}" class="form-label">
-            {{ patient_form.name.label }}
+            Nome
+            {% comment %} {{ patient_form.name.label }} Este Label esta em ingles {% endcomment %}
           </label>
           {{ patient_form.name }}
           {% if patient_form.name.errors %}
@@ -26,7 +27,8 @@
         </div>
         <div class="col-md-6 mb-3">
           <label for="{{ patient_form.phone.id_for_label}}" class="form-label">
-            {{ patient_form.phone.label }}
+            Telefone
+            {% comment %} {{ patient_form.phone.label }} {% endcomment %}
           </label>
           {{ patient_form.phone }}
           {% if patient_form.phone.errors %}
@@ -39,9 +41,9 @@
       <div class="row">
         <div class="col-md-2 mb-3">
           <label for="{{ patient_form.birth_date.id_for_label }}" class="form-label">
-            {{ patient_form.birth_date.label }}
+            Data de Nascimento
+            {% comment %} {{ patient_form.birth_date.label }} {% endcomment %}
           </label>
-
           {{ patient_form.birth_date }}
           {% if patient_form.birth_date.errors %}
             <div class="text-danger small">{{ patient_form.birth_date.errors|striptags }}</div>
@@ -49,7 +51,8 @@
         </div>
         <div class="col-md-4 mb-3">
           <label for="{{ patient_form.gender.id_for_label }}" class="form-label">
-            {{ patient_form.gender.label }}
+            Gênero
+            {% comment %} {{ patient_form.gender.label }} {% endcomment %}
           </label>
           {{ patient_form.gender }}
           {% if patient_form.gender.errors %}
@@ -58,7 +61,8 @@
         </div>
         <div class="col-md-6 mb-3">
           <label for="{{ address_form.city.id_for_label }}" class="form-label">
-            {{ address_form.city.label }}
+            Cidade
+            {% comment %} {{ address_form.city.label }} {% endcomment %}
           </label>
           {{ address_form.city }}
           {% if address_form.city.errors %}
@@ -72,7 +76,8 @@
        
         <div class="col-md-4 mb-3"> <!-- Rua -->
           <label for="{{ address_form.street.id_for_label }}" class="form-label">
-            {{ address_form.street.label }}
+            Rua
+            {% comment %} {{ address_form.street.label }} {% endcomment %}
           </label>
           {{ address_form.street }}
           {% if address_form.street.errors %}
@@ -81,7 +86,8 @@
         </div>
         <div class="col-md-2 mb-3"> <!-- Numero -->
           <label for="{{ address_form.number.id_for_label }}" class="form-label">
-            {{ address_form.number.label }}
+            Numero
+            {% comment %} {{ address_form.number.label }} {% endcomment %}
           </label>
           {{ address_form.number }}
           {% if address_form.number.errors %}
@@ -99,7 +105,8 @@
         </div>
         <div class="col-md-3 mb-3"> <!-- Bairro -->
           <label for="{{ address_form.district.id_for_label }}" class="form-label">
-            {{ address_form.district.label }}
+            Bairro
+            {% comment %} {{ address_form.district.label }} {% endcomment %}
           </label>
           {{ address_form.district }}
           {% if address_form.district.errors %}
@@ -112,7 +119,8 @@
       <div class="row">
         <div class="col-md-6 mb-1"> <!-- Diagnostico -->
           <label for="{{ case_form.status.id_for_label }}" class="form-label">
-            {{ case_form.status.label }}
+            Diagnóstico
+            {% comment %} {{ case_form.status.label }} {% endcomment %}
           </label>
           {{ case_form.status }}
           {% if case_form.status.errors %}
@@ -120,7 +128,7 @@
           {% endif %}
         </div>
         <div class="col-md-6 mb-3">
-          <label class="form-label">{{ case_form.symptoms.label }}</label>
+          <label class="form-label">Sintomas</label> {# {{ case_form.symptoms.label }} #} 
           <div class="row">
             {% for checkbox in case_form.symptoms %}
               <div class="col-6 col-md-4">
@@ -140,10 +148,10 @@
        
       </div>
       
-      <!-- Linha 7: Notas (Textarea ocupa col-12 se quiser que seja mais largo) -->
+      {% comment %} <!-- Linha 7: Notas (Textarea ocupa col-12 se quiser que seja mais largo) -->
       <div class="row">
         
-      </div>
+      </div> {% endcomment %}
       
     </div>
     <div class="card-footer d-flex justify-content-between">
@@ -151,7 +159,7 @@
         <i class="bi bi-arrow-left"></i> Voltar
       </a>
       <button type="submit" class="btn btn-primary">
-        <i class="bi bi-save"></i> {{ mode_edit|yesno:'Editar Caso ,Salvar Caso'}}
+        <i class="bi bi-save"></i> {{ mode_edit|yesno:'Editar Caso ,Salvar Caso'}}  
       </button>
     </div>
   </div>
