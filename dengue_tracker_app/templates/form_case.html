@@ -1,16 +1,16 @@
 {% extends 'base.html' %}
 
-{% block title %}Registrar Novo Caso{% endblock %}
+{% block title %}{{ mode_edit|yesno:'Editar Caso ,Registrar Novo Caso'}}{% endblock %}
 
 {% block content %}
-<h2 class="mb-2">Registrar Novo Caso</h2>
+<h2 class="mb-2">{{ mode_edit|yesno:'Editar Caso ,Registrar Novo Caso'}}</h2>
 
 <form method="post" novalidate>
   {% csrf_token %}
   
   <div class="card mb-4">
     <div class="card-header">
-      Novo Caso
+      {{ mode_edit|yesno:'Editar Caso ,Novo Caso'}}
     </div>
     <div class="card-body">
       <!-- Linha 1: Nome / Telefone -->
@@ -151,7 +151,7 @@
         <i class="bi bi-arrow-left"></i> Voltar
       </a>
       <button type="submit" class="btn btn-primary">
-        <i class="bi bi-save"></i> Salvar Caso
+        <i class="bi bi-save"></i> {{ mode_edit|yesno:'Editar Caso ,Salvar Caso'}}
       </button>
     </div>
   </div>

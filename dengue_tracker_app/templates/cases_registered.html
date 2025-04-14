@@ -2,14 +2,14 @@
 {% load static %}
 
 {% block title %}
-  Lista de Cases
+  Lista de Casos
 {% endblock %}
 
 {% block content %}
 <div class="container mt-1">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h2 class="fw-bold">Lista de Casos</h2>
-    <a href="{% url 'novo_caso' %}" class="btn btn-primary">
+    <a href="{% url 'new_case' %}" class="btn btn-primary">
       <i class="bi bi-plus-circle me-1"></i> Novo Caso
     </a>
   </div>
@@ -47,8 +47,11 @@
           <td>{{ case.created_at|date:"d/m/Y H:i" }}</td>
           <td class="text-end">
             {% comment %} {% url 'detalhes_case' case.id %} {% endcomment %}
-            <a href="" class="btn btn-info btn-sm">
-              <i class="bi bi-eye"></i> Detalhes
+            <a href="{% url "edit_case" case.id%}" class="btn btn-warning btn-sm">
+              <i class="bi bi-pencil-square"></i>
+            </a>
+            <a href="{% url "delete_case" case.id%}" class="btn btn-danger btn-sm">
+              <i class="bi bi-trash3-fill"></i>
             </a>
           </td>
         </tr>
