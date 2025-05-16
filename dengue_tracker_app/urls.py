@@ -7,4 +7,6 @@ urlpatterns = [
     path("form_case/", views.case_register_or_edit, name="new_case"),
     path("form_case/<int:case_id>/", views.case_register_or_edit, name="edit_case"),
     path("delete/<int:case_id>/", views.case_delete, name="delete_case"),
+    path("dashboard/", views.home_dashboard, name='home_dashboard'),
+    path("dashboard/generate_map/", views.generate_map, name='generate_map')
 ]

@@ -10,13 +10,13 @@ class PatientForm(forms.ModelForm): # "ModelForm" nos permite transitar com os d
             'name': TextInput(attrs={'class': 'form-control'}), # Tambem e possivel inserir classes do CSS
             'birth_date': DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'gender': Select(attrs={'class': 'form-select'}),
-            'phone': TextInput(attrs={'class': 'form-control', 'maxlength': '11'}),
+            'phone': TextInput(attrs={'class': 'form-control'}),
         }
 
 class AddressForm(forms.ModelForm):
     class Meta:
         model = Address
-        fields = ['city', 'cep', 'street', 'number', 'district']
+        fields = ['city', 'cep', 'street', 'number', 'district', 'patient']
         widgets = {
             'city': Select(attrs={'class': 'form-select'}),
             'cep': NumberInput(attrs={'class': 'form-control'}),
@@ -34,3 +34,7 @@ class CaseForm(forms.ModelForm):
             'notes': Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'symptoms': forms.CheckboxSelectMultiple(),
         }
+
+def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['symptoms'].required = False

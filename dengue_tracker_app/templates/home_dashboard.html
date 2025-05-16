@@ -1,0 +1,10 @@
+
+{% extends 'base.html' %}
+
+{% block title %}'Dashboards'{% endblock %}
+
+{% block content %}
+<h1>dashboard</h1>
+
+<a href="{% url 'generate_map' %}"><button type="button" class="btn btn-primary">Gerar mapa</button></a>
+{% endblock %}

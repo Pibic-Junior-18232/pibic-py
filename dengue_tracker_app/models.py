@@ -12,6 +12,7 @@ class GenderEnum(models.TextChoices):
 class CaseEnum(models.TextChoices):
     SUSPEITO = 'suspeito', 'Suspeito'
     CONFIRMADO = 'confirmado', 'Confirmado'
+    NEGATIVADO = 'negativado', 'Negativado'
 
 class DefaultColumnsModel(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
@@ -71,7 +72,7 @@ class Case(DefaultColumnsModel):
     address = models.ForeignKey(Address, on_delete=models.CASCADE)
     status = models.CharField(max_length=20, choices=CaseEnum.choices)
     notes = models.TextField(null=True, blank=True)
-    symptoms = models.ManyToManyField(Symptom, through='CaseSymptom')
+    symptoms = models.ManyToManyField(Symptom, through='CaseSymptom', blank=True)
 
     def __str__(self):
         return f"Case #{self.id} - {self.status}"
