@@ -13,6 +13,13 @@ class PatientForm(forms.ModelForm): # "ModelForm" nos permite transitar com os d
             'phone': TextInput(attrs={'class': 'form-control'}),
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['name'].required = True
+        self.fields['birth_date'].required = True
+        self.fields['gender'].required = True
+        self.fields['phone'].required = True
+
 class AddressForm(forms.ModelForm):
     class Meta:
         model = Address
@@ -25,6 +32,14 @@ class AddressForm(forms.ModelForm):
             'district': TextInput(attrs={'class': 'form-control'}),
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['city'].required = True
+        self.fields['cep'].required = False
+        self.fields['street'].required = True
+        self.fields['number'].required = True
+        self.fields['district'].required = True
+
 class CaseForm(forms.ModelForm):
     class Meta:
         model = Case
@@ -35,6 +50,8 @@ class CaseForm(forms.ModelForm):
             'symptoms': forms.CheckboxSelectMultiple(),
         }
 
-def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['status'].required = True
+        self.fields['notes'].required = False
         self.fields['symptoms'].required = False

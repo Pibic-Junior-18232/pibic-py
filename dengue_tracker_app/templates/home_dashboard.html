@@ -1,10 +1,35 @@
-
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}'Dashboards'{% endblock %}
 
 {% block content %}
-<h1>dashboard</h1>
 
-<a href="{% url 'generate_map' %}"><button type="button" class="btn btn-primary">Gerar mapa</button></a>
+<div class="d-flex justify-content-between justify-items-end align-items-center mb-3">
+ <h2 class="mb-3">Mapa de Casos de Dengue</h2>
+
+{% if total == 0 %}
+  <div class="alert alert-info mt-3">Nenhum caso cadastrado ainda.</div>
+{% elif sem_latlong > 0 %}
+  <div class="alert alert-warning mt-3">Existem registros para atualizar o mapa.</div>
+{% elif todos_completos %}
+  <div class="alert alert-success mt-3">Todos os registros estão atualizados</div>
+{% endif %}
+</div>
+
+<div class="mt-4">
+  <iframe src="{% static 'map.html' %}" width="100%" height="600" style="border:1px solid #ccc;"></iframe>
+</div>
+
+<style>
+.fab-btn {
+  position: fixed;
+  right: 32px;
+  bottom: 32px;
+  z-index: 9999;
+}
+</style>
+<a href="{% url 'generate_map' %}" class="position-fixed bottom-0 end-0 m-4 z-3 btn btn-primary">
+    <i class="bi bi-arrow-clockwise me-1"></i>Atualizar mapa
+</a>
 {% endblock %}

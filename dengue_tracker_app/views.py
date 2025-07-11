@@ -7,6 +7,9 @@ from django.utils import timezone
 from gmplot import gmplot
 import googlemaps
 import webbrowser
+from pathlib import Path
+
+static_dir = Path(__file__).resolve().parent / 'static'
 
 def home_page(request):
     return render(request, 'home_page.html')
@@ -100,7 +103,8 @@ def set_lat_long(): # Funcao que vai chamar a api. Serve unicamente para setar o
     coord = googlemaps.Client(key=apikey)  
 
     for ad in addresses:
-        message = f'{ad.street}, {ad.district}, {ad.number}, Dracena, SP'
+
+        message = f'{ad.cep}, {ad.street}, {ad.district}, {ad.number}, Dracena, SP'
 
         geocode_result = coord.geocode(message)
         print(ad)
@@ -131,6 +135,6 @@ def generate_map(request):
         gmap.marker(ad.latitude, ad.longitude, color='red')
         print('marker')
 
-    gmap.draw('map.html')
+    gmap.draw(str(static_dir / 'map.html'))
 
     return redirect('registros')

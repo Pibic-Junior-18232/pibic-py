@@ -16,7 +16,7 @@
       <!-- Linha 1: Nome / Telefone -->
       <div class="row">
         <div class="col-md-6 mb-3">
-          <label for="{{ patient_form.name.id_for_label }}" class="form-label">Nome</label>
+          <label for="{{ patient_form.name.id_for_label }}" class="form-label">Nome <span style="color: red">*</span></label>
           {{ patient_form.name }}
           {% if patient_form.name.errors %}
             <div class="text-danger small">{{ patient_form.name.errors|striptags }}</div>
@@ -24,7 +24,7 @@
         </div>
 
         <div class="col-md-6 mb-3">
-          <label for="{{ patient_form.phone.id_for_label}}" class="form-label">Telefone</label>
+          <label for="{{ patient_form.phone.id_for_label}}" class="form-label">Telefone <span style="color: red">*</span></label>
           {{ patient_form.phone }}
           {% if patient_form.phone.errors %}
             <div class="text-danger small">{{ patient_form.phone.errors|striptags }}</div>
@@ -36,7 +36,7 @@
       <div class="row">
         <div class="col-md-2 mb-3">
           <label for="{{ patient_form.birth_date.id_for_label }}" class="form-label">
-            Data de Nascimento
+            Data de Nascimento <span style="color: red">*</span>
             {% comment %} {{ patient_form.birth_date.label }} {% endcomment %}
           </label>
           {{ patient_form.birth_date }}
@@ -46,7 +46,7 @@
         </div>
         <div class="col-md-4 mb-3">
           <label for="{{ patient_form.gender.id_for_label }}" class="form-label">
-            Gênero
+            Gênero <span style="color: red">*</span>
             {% comment %} {{ patient_form.gender.label }} {% endcomment %}
           </label>
           {{ patient_form.gender }}
@@ -56,7 +56,7 @@
         </div>
         <div class="col-md-6 mb-3">
           <label for="{{ address_form.city.id_for_label }}" class="form-label">
-            Cidade
+            Cidade <span style="color: red">*</span>
             {% comment %} {{ address_form.city.label }} {% endcomment %}
           </label>
           {{ address_form.city }}
@@ -71,7 +71,7 @@
        
         <div class="col-md-4 mb-3"> <!-- Rua -->
           <label for="{{ address_form.street.id_for_label }}" class="form-label">
-            Rua
+            Rua <span style="color: red">*</span>
             {% comment %} {{ address_form.street.label }} {% endcomment %}
           </label>
           {{ address_form.street }}
@@ -81,7 +81,7 @@
         </div>
         <div class="col-md-2 mb-3"> <!-- Numero -->
           <label for="{{ address_form.number.id_for_label }}" class="form-label">
-            Numero
+            Numero <span style="color: red">*</span>
             {% comment %} {{ address_form.number.label }} {% endcomment %}
           </label>
           {{ address_form.number }}
@@ -100,7 +100,7 @@
         </div>
         <div class="col-md-3 mb-3"> <!-- Bairro -->
           <label for="{{ address_form.district.id_for_label }}" class="form-label">
-            Bairro
+            Bairro <span style="color: red">*</span>
             {% comment %} {{ address_form.district.label }} {% endcomment %}
           </label>
           {{ address_form.district }}
@@ -114,7 +114,7 @@
       <div class="row">
         <div class="col-md-6 mb-1"> <!-- Diagnostico -->
           <label for="{{ case_form.status.id_for_label }}" class="form-label">
-            Diagnóstico
+            Diagnóstico <span style="color: red">*</span>
           </label>
           {{ case_form.status }}
           {% if case_form.status.errors %}
