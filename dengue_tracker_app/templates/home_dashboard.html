@@ -1,35 +1,47 @@
 {% extends 'base.html' %}
-{% load static %}
 
 {% block title %}'Dashboards'{% endblock %}
 
 {% block content %}
+<div>
+    <div class="row">
+        <div class="col-12">
+            
+            {% if has_addresses %}
+                <div class="d-flex justify-content-between justify-items-end align-items-center mb-3">
+                    <h2 class="mb-3">Mapa de Casos de Dengue</h2>
 
-<div class="d-flex justify-content-between justify-items-end align-items-center mb-3">
- <h2 class="mb-3">Mapa de Casos de Dengue</h2>
+                    {% if needs_update %}
+                    <small class="text-muted ml-4">
+                        Existem endereços que ainda não foram mapeados.
+                    </small>
+                        <a href="{% url 'generate_map' %}" class="btn btn-warning">
+                            <i class="fas fa-sync-alt"></i> Atualizar Endereços e Mapa
+                        </a>
+                    {% else %}
+                        <a href="{% url 'generate_map' %}" class="btn btn-primary">
+                            <i class="fas fa-sync-alt"></i> Atualizar Mapa
+                        </a>
+                    {% endif %}
+                </div>
 
-{% if total == 0 %}
-  <div class="alert alert-info mt-3">Nenhum caso cadastrado ainda.</div>
-{% elif sem_latlong > 0 %}
-  <div class="alert alert-warning mt-3">Existem registros para atualizar o mapa.</div>
-{% elif todos_completos %}
-  <div class="alert alert-success mt-3">Todos os registros estão atualizados</div>
-{% endif %}
+                {% if map_url %}
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <iframe src="{{ map_url }}" width="100%" height="700" frameborder="0" style="border:0;" allowfullscreen=""></iframe>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info">
+                        Clique no botão acima para gerar o mapa com as localizações dos casos.
+                    </div>
+                {% endif %}
+            {% else %}
+                <div class="alert alert-info">
+                    Nenhum caso registrado ainda. O mapa será exibido quando houver casos cadastrados.
+                </div>
+            {% endif %}
+        </div>
+    </div>
 </div>
-
-<div class="mt-4">
-  <iframe src="{% static 'map.html' %}" width="100%" height="600" style="border:1px solid #ccc;"></iframe>
-</div>
-
-<style>
-.fab-btn {
-  position: fixed;
-  right: 32px;
-  bottom: 32px;
-  z-index: 9999;
-}
-</style>
-<a href="{% url 'generate_map' %}" class="position-fixed bottom-0 end-0 m-4 z-3 btn btn-primary">
-    <i class="bi bi-arrow-clockwise me-1"></i>Atualizar mapa
-</a>
 {% endblock %}

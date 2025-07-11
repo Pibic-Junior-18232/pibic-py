@@ -5,9 +5,11 @@ from django.db import transaction
 from django.utils import timezone
 
 from gmplot import gmplot
+from pathlib import Path
+from django.conf import settings
 import googlemaps
 import webbrowser
-from pathlib import Path
+import os
 
 static_dir = Path(__file__).resolve().parent / 'static'
 
@@ -94,10 +96,35 @@ def case_delete(request, case_id):
     return redirect('registros')    
 
 def home_dashboard(request):
-    return render(request, 'home_dashboard.html')
+
+    addresses_without_coords = Address.objects.filter(deleted=False, latitude__isnull=True).exists()
+    addresses_with_coords = Address.objects.filter(deleted=False, latitude__isnull=False).exists()
+
+    dengue_static_dir = Path(__file__).resolve().parent / 'static'
+    os.makedirs(dengue_static_dir, exist_ok=True)
+    map_file = os.path.join(dengue_static_dir, 'map.html')
+
+    map_url = settings.STATIC_URL + 'map.html'
+
+    if addresses_with_coords and not os.path.exists(map_file):
+        apikey = 'AIzaSyCXiKI8zhQ4pZwbxwyunA-rdKFe2CzMpkA'
+        gmap = gmplot.GoogleMapPlotter(-21.4857339, -51.532612, 14, apikey=apikey)
+
+        for ad in Address.objects.filter(deleted=False, latitude__isnull=False):
+            gmap.marker(float(ad.latitude), float(ad.longitude), color='red')
+
+        gmap.draw(map_file)
+
+    context = {
+        'map_url': map_url if addresses_with_coords else None,
+        'needs_update': addresses_without_coords,
+        'has_addresses': addresses_with_coords or addresses_without_coords
+    }
+
+    return render(request, 'home_dashboard.html', context)
 
 def set_lat_long(): # Funcao que vai chamar a api. Serve unicamente para setar os valores
-    addresses = Address.objects.filter(latitude=None, longitude=None) # So coleta os enderecos que ainda nao tem valor em 'latitude' e 'longitude'
+    addresses = Address.objects.filter(deleted=False, latitude__isnull=True, longitude__isnull=True) # So coleta os enderecos que ainda nao tem valor em 'latitude' e 'longitude'
       
     apikey = 'AIzaSyCXiKI8zhQ4pZwbxwyunA-rdKFe2CzMpkA'
     coord = googlemaps.Client(key=apikey)  
@@ -107,34 +134,41 @@ def set_lat_long(): # Funcao que vai chamar a api. Serve unicamente para setar o
         message = f'{ad.cep}, {ad.street}, {ad.district}, {ad.number}, Dracena, SP'
 
         geocode_result = coord.geocode(message)
-        print(ad)
 
-        latitude = geocode_result[0]['geometry']['location']['lat']
-        longitude = geocode_result[0]['geometry']['location']['lng']
+        ad.latitude = geocode_result[0]['geometry']['location']['lat']
+        ad.longitude = geocode_result[0]['geometry']['location']['lng']
+        print('kurintiaa')
+        street_name = ad.street
+        for i in (0, 1):
+            short = geocode_result[0]['address_components'][i]['long_name']
+            print(short)
+            if short.startswith('R.') or short.startswith('Rua') or short.startswith('Avenida') or short.startswith('Av.'):
+                street_name = short
+                break
 
-        ad.latitude = latitude
-        ad.longitude = longitude
-        ad.street = geocode_result[0]['address_components'][0]['short_name']
-        print('setou')
+        ad.street = street_name
         ad.save()
 
 
 def generate_map(request):
-    set_lat_long()
+    addresses_without_coords = Address.objects.filter(deleted=False, latitude__isnull=True, longitude__isnull=True)
+    if addresses_without_coords.exists():
+        print('chamouu')
+        set_lat_long()
 
-    addresses = Address.objects.all()
+    addresses = Address.objects.filter(deleted=False, latitude__isnull=False, longitude__isnull=False)
 
     apikey = 'AIzaSyCXiKI8zhQ4pZwbxwyunA-rdKFe2CzMpkA'
-    coord = googlemaps.Client(key=apikey)  
-
-    # Onde Abre o Google maps
     gmap = gmplot.GoogleMapPlotter(-21.4857339, -51.532612, 14, apikey=apikey)
 
-
     for ad in addresses:
-        gmap.marker(ad.latitude, ad.longitude, color='red')
-        print('marker')
+        gmap.marker(float(ad.latitude), float(ad.longitude), color='red')
 
-    gmap.draw(str(static_dir / 'map.html'))
+    # Caminho para salvar o mapa apenas em static dentro do app
+    dengue_static_dir = Path(__file__).resolve().parent / 'static'
+    dengue_static_dir.mkdir(exist_ok=True)
+    map_file = dengue_static_dir / 'map.html'
 
-    return redirect('registros')
+    gmap.draw(str(map_file))
+
+    return redirect('home_dashboard')
