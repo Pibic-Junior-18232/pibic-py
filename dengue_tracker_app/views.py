@@ -10,6 +10,8 @@ from django.conf import settings
 import googlemaps
 import webbrowser
 import os
+from django.http import HttpResponse
+from django.views.decorators.clickjacking import xframe_options_exempt
 
 static_dir = Path(__file__).resolve().parent / 'static'
 
@@ -100,23 +102,19 @@ def home_dashboard(request):
     addresses_without_coords = Address.objects.filter(deleted=False, latitude__isnull=True).exists()
     addresses_with_coords = Address.objects.filter(deleted=False, latitude__isnull=False).exists()
 
-    dengue_static_dir = Path(__file__).resolve().parent / 'static'
-    os.makedirs(dengue_static_dir, exist_ok=True)
-    map_file = os.path.join(dengue_static_dir, 'map.html')
-
-    map_url = settings.STATIC_URL + 'map.html'
-
-    if addresses_with_coords and not os.path.exists(map_file):
+    map_url = None
+    if addresses_with_coords:
         apikey = 'AIzaSyCXiKI8zhQ4pZwbxwyunA-rdKFe2CzMpkA'
         gmap = gmplot.GoogleMapPlotter(-21.4857339, -51.532612, 14, apikey=apikey)
 
         for ad in Address.objects.filter(deleted=False, latitude__isnull=False):
             gmap.marker(float(ad.latitude), float(ad.longitude), color='red')
 
-        gmap.draw(map_file)
+        gmap.draw('dengue_tracker_app/map.html')
+        map_url = '/map/'
 
     context = {
-        'map_url': map_url if addresses_with_coords else None,
+        'map_url': map_url,
         'needs_update': addresses_without_coords,
         'has_addresses': addresses_with_coords or addresses_without_coords
     }
@@ -165,10 +163,16 @@ def generate_map(request):
         gmap.marker(float(ad.latitude), float(ad.longitude), color='red')
 
     # Caminho para salvar o mapa apenas em static dentro do app
-    dengue_static_dir = Path(__file__).resolve().parent / 'static'
-    dengue_static_dir.mkdir(exist_ok=True)
-    map_file = dengue_static_dir / 'map.html'
 
-    gmap.draw(str(map_file))
+    gmap.draw('dengue_tracker_app/map.html')
 
     return redirect('home_dashboard')
+
+@xframe_options_exempt
+def get_map(request):
+    from pathlib import Path
+    map_path = Path(__file__).resolve().parent / 'map.html'
+    if map_path.exists():
+        with open(map_path, 'r', encoding='utf-8') as f:
+            return HttpResponse(f.read(), content_type='text/html')
+    return HttpResponse('Mapa não encontrado.', status=404)

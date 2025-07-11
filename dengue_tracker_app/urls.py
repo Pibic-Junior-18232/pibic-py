@@ -1,5 +1,6 @@
 from django.urls import path
 from dengue_tracker_app import views
+from .views import get_map
 
 urlpatterns = [
     path("", views.home_page, name="home"),
@@ -8,5 +9,6 @@ urlpatterns = [
     path("form_case/<int:case_id>/", views.case_register_or_edit, name="edit_case"),
     path("delete/<int:case_id>/", views.case_delete, name="delete_case"),
     path("dashboard/", views.home_dashboard, name='home_dashboard'),
-    path("dashboard/generate_map/", views.generate_map, name='generate_map')
+    path("dashboard/generate_map/", views.generate_map, name='generate_map'),
+    path('map/', get_map, name='get_map'),
 ]
