@@ -10,7 +10,7 @@ class PatientForm(forms.ModelForm): # "ModelForm" nos permite transitar com os d
             'name': TextInput(attrs={'class': 'form-control'}), # Tambem e possivel inserir classes do CSS
             'birth_date': DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'gender': Select(attrs={'class': 'form-select'}),
-            'phone': TextInput(attrs={'class': 'form-control'}),
+            'phone': TextInput(attrs={'class': 'form-control', 'maxlength': '15'}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -26,7 +26,7 @@ class AddressForm(forms.ModelForm):
         fields = ['city', 'cep', 'street', 'number', 'district', 'patient']
         widgets = {
             'city': Select(attrs={'class': 'form-select'}),
-            'cep': NumberInput(attrs={'class': 'form-control'}),
+            'cep': TextInput(attrs={'class': 'form-control', 'maxlength': '9'}),
             'street': TextInput(attrs={'class': 'form-control'}),
             'number': TextInput(attrs={'class': 'form-control'}),
             'district': TextInput(attrs={'class': 'form-control'}),
@@ -39,6 +39,14 @@ class AddressForm(forms.ModelForm):
         self.fields['street'].required = True
         self.fields['number'].required = True
         self.fields['district'].required = True
+        self.fields['cep'].initial = '17900-163'
+
+    def clean(self):
+        cleaned_data = super().clean()
+        cep = cleaned_data.get('cep')
+        if cep:
+            cleaned_data['cep'] = int(str(cep).replace('-', ''))
+        return cleaned_data
 
 class CaseForm(forms.ModelForm):
     class Meta:

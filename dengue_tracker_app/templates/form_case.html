@@ -158,4 +158,45 @@
     </div>
   </div>
 </form>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Máscara para telefone (formato: (99) 99999-9999 ou (99) 9999-9999)
+    const phoneInput = document.querySelector('input[name="phone"]');
+    if (phoneInput) {
+        function formatPhone(value) {
+            let x = value.replace(/\D/g, '').slice(0, 11);
+            if (x.length > 10) {
+                return x.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+            } else if (x.length > 6) {
+                return x.replace(/(\d{2})(\d{4,5})(\d{0,4})/, '($1) $2-$3');
+            } else if (x.length > 2) {
+                return x.replace(/(\d{2})(\d{0,5})/, '($1) $2');
+            } else {
+                return x.replace(/(\d{0,2})/, '($1');
+            }
+        }
+        phoneInput.addEventListener('input', function(e) {
+            e.target.value = formatPhone(e.target.value);
+        });
+        phoneInput.addEventListener('blur', function(e) {
+            e.target.value = formatPhone(e.target.value);
+        });
+    }
+
+    // Máscara para CEP (formato: 99999-999)
+    const cepInput = document.querySelector('input[name="cep"]');
+    if (cepInput) {
+        function formatCep(value) {
+            let x = value.replace(/\D/g, '').slice(0, 8);
+            if (x.length > 5) {
+                return x.replace(/(\d{5})(\d{0,3})/, '$1-$2');
+            }
+            return x;
+        }
+        cepInput.addEventListener('input', function(e) {
+            e.target.value = formatCep(e.target.value);
+        });
+    }
+});
+</script>
 {% endblock %}

@@ -48,7 +48,7 @@ class Patient(DefaultColumnsModel):
 class Address(DefaultColumnsModel):
     patient = models.ForeignKey(Patient, null=True, blank=True, on_delete=models.SET_NULL)
     city = models.ForeignKey(City, on_delete=models.PROTECT)
-    cep = models.IntegerField(null=True, blank=True)
+    cep = models.CharField(max_length=9, null=True, blank=True)
     street = models.CharField(max_length=150, null=True, blank=True)
     number = models.CharField(max_length=20, null=True, blank=True)
     district = models.CharField(max_length=100)
